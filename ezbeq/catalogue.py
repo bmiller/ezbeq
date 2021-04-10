@@ -43,6 +43,11 @@ class Catalogue:
         self.rating = vals.get('rating', '')
         self.genres = vals.get('genres', [])
         self.mv_adjust = 0.0
+        try:
+            r = int(vals.get('runtime', 0))
+        except:
+            logger.error(f"Invalid runtime {vals.get('runtime', 0)} in {self.title}")
+        self.runtime = r
         if 'mv' in vals:
             v = vals['mv']
             try:
@@ -87,6 +92,8 @@ class Catalogue:
             self.for_search['theMovieDB'] = self.theMovieDB
         if self.rating:
             self.for_search['rating'] = self.rating
+        if self.runtime:
+            self.for_search['runtime'] = self.runtime
         if self.genres:
             self.for_search['genres'] = self.genres
         self.short_search = {

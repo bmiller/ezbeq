@@ -4,6 +4,7 @@ from os import path
 
 from flask import Flask
 from flask_restful import Api
+from flask_compress import Compress
 
 from ezbeq.catalogue import CatalogueProvider, Authors, Years, AudioTypes, CatalogueSearch, CatalogueMeta, ContentTypes
 from ezbeq.config import Config, Version
@@ -18,6 +19,7 @@ if hasattr(faulthandler, 'register'):
     faulthandler.register(signal.SIGUSR2, all_threads=True)
 
 app = Flask(__name__)
+Compress(app)
 api = Api(app)
 cfg = Config('ezbeq')
 resource_args = {
@@ -107,7 +109,7 @@ def main(args=None):
                 else:
                     # release script moves the ui under the analyser package because setuptools doesn't seem to include
                     # files from outside the package
-                    uiRoot = os.path.join(os.path.dirname(__file__), 'ui')
+                    uiRoot = "/Users/bradmiller/Projects/ezbeq/ui" # os.path.join(os.path.dirname(__file__), 'ui')
                 logger.info('Serving ui from ' + str(uiRoot))
                 self.react = ReactApp(uiRoot)
                 self.static = static.File(os.path.join(uiRoot, 'static'))
